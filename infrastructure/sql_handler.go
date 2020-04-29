@@ -5,6 +5,7 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/wakatakeru/refmag-index-api/interfaces/database"
 )
 
 type SqlHandler struct {
@@ -25,7 +26,7 @@ func NewSqlHandler() *SqlHandler {
 	)
 	
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	sqlHandler := new(SqlHandler)
@@ -33,6 +34,53 @@ func NewSqlHandler() *SqlHandler {
 	return sqlHandler
 }
 
-func (varName string) env(value string) {
+func (handler *SqlHandler) Execute(statement string, args ...interface{}) (database.Result, error) {
+	res := SqlResult{}
+	result, err := handler.Conn.Exec(statement, args...)
+	if err != nil {
+		return res, err 
+	}
+	res.Result = result
+	return res, nil
+}
+
+func (handler *SqlHandler) Query(statement string, args ...interface{}) (database.Row, error) {
+	rows, err := handler.Conn.Exec(statement, args...)
+	if err != nil {
+		return res, err
+	}
+	res.Result = result
+	return res, nil
+}
+
+type SqlResult struct {
+	Result sql.Result
+}
+
+func (r SqlResult) LastInsertId() (int64, error) {
+	return r.Result.LastInsertId()	
+}
+
+func (r SqlHandler) RowAffected() (int64, error) {
+	return r.Result.RowAffected()
+}
+
+type SqlRow struct {
+	Rows *sql.Rows
+}
+
+func (r SqlRow) Scan(dest ...interface{}) error {
+	return r.Row.Scan(dest...)
+}
+
+func (r SqlRow) Next() bool {
+    return r.Rows.Next()
+}
+
+func (r SqlRow) Close() error {
+    return r.Rows.Close()
+}
+
+func env(varName string) string {
 	return os.Getenv(varName)
 }
