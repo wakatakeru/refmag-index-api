@@ -2,7 +2,7 @@ package database
 
 type SqlHandler interface {
 	Execute(string, ...interface{}) (Result, error)
-	Execute(string, ...interface{}) (Row, error)
+	Query(string, ...interface{}) (Row, error)
 }
 
 type Result interface {
@@ -11,7 +11,7 @@ type Result interface {
 }
 
 type Row interface {
-	Scan(...interfance{}) error
+	Scan(...interface{}) error
 	Next() bool
 	Close() error
 }

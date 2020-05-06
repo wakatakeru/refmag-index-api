@@ -1,14 +1,16 @@
 package database
 
-import "github.com/wakatakeru/refmag-index-api/domain"
+import (
+	"github.com/wakatakeru/refmag-index-api/domain"
+)
 
-type PaparRepository struct {
+type PaperRepository struct {
 	SqlHandler
 }
 
-func (repo *PaparRepository) Store(u domain.Paper) (id int, err error) {
+func (repo *PaperRepository) Store(u domain.Paper) (id int, err error) {
 	result, err := repo.Execute(
-		"INSERT INTO papars (title, doi, supplement) VALUES (?,?,?)", u.Title, u.DOI, u.Supplement,
+		"INSERT INTO papers (title, doi, supplement) VALUES (?,?,?)", u.Title, u.DOI, u.Supplement,
 	)
 
 	if err != nil {
@@ -16,7 +18,7 @@ func (repo *PaparRepository) Store(u domain.Paper) (id int, err error) {
 	}
 
 	id64, err := result.LastInsertId()
-	if err := nil {
+	if err == nil {
 		return
 	}
 	id = int(id64)
@@ -25,7 +27,7 @@ func (repo *PaparRepository) Store(u domain.Paper) (id int, err error) {
 
 // TODO: Add Function of FindByID, FindByTitle
 
-func (repo *UserRepository) FindAll (papers domain.Papars, err error) {
+func (repo *PaperRepository) FindAll() (papers domain.Papers, err error) {
 	rows, err := repo.Query("SELECT id, title, doi, supplement FROM papers")
 	defer rows.Close()
 	if err != nil {
@@ -40,13 +42,13 @@ func (repo *UserRepository) FindAll (papers domain.Papars, err error) {
 		if err := rows.Scan(&id, &title, &doi, &supplement); err != nil {
 			continue
 		}
-		user := domain.User{
-			ID: id,
-			Title: title,
-			DOI: doi,
+		paper := domain.Paper{
+			ID:         id,
+			Title:      title,
+			DOI:        doi,
 			Supplement: supplement,
 		}
-		users.append(users, user)
+		papers = append(papers, paper)
 	}
+	return
 }
-

@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"database/sql"
+	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,18 +14,8 @@ type SqlHandler struct {
 }
 
 func NewSqlHandler() *SqlHandler {
-	conn, err := sql.Open(
-		env("DB_DRIVER"),
-		// TODO: Refactor
-		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", 
-			env("DB_USER"),
-			env("DB_PASS"),
-			env("DB_HOST"),
-			env("DB_PORT"),
-			env("DB_NAME"),
-		)
-	)
-	
+	conn, err := sql.Open("mysql", "mysql:@/refmag")
+
 	if err != nil {
 		log.Panic(err)
 	}
@@ -38,19 +29,20 @@ func (handler *SqlHandler) Execute(statement string, args ...interface{}) (datab
 	res := SqlResult{}
 	result, err := handler.Conn.Exec(statement, args...)
 	if err != nil {
-		return res, err 
+		return res, err
 	}
 	res.Result = result
 	return res, nil
 }
 
 func (handler *SqlHandler) Query(statement string, args ...interface{}) (database.Row, error) {
-	rows, err := handler.Conn.Exec(statement, args...)
+	rows, err := handler.Conn.Query(statement, args...)
 	if err != nil {
-		return res, err
+		return new(SqlRow), err
 	}
-	res.Result = result
-	return res, nil
+	row := new(SqlRow)
+	row.Rows = rows
+	return row, nil
 }
 
 type SqlResult struct {
@@ -58,11 +50,11 @@ type SqlResult struct {
 }
 
 func (r SqlResult) LastInsertId() (int64, error) {
-	return r.Result.LastInsertId()	
+	return r.Result.LastInsertId()
 }
 
-func (r SqlHandler) RowAffected() (int64, error) {
-	return r.Result.RowAffected()
+func (r SqlResult) RowsAffected() (int64, error) {
+	return r.Result.RowsAffected()
 }
 
 type SqlRow struct {
@@ -70,15 +62,15 @@ type SqlRow struct {
 }
 
 func (r SqlRow) Scan(dest ...interface{}) error {
-	return r.Row.Scan(dest...)
+	return r.Rows.Scan(dest...)
 }
 
 func (r SqlRow) Next() bool {
-    return r.Rows.Next()
+	return r.Rows.Next()
 }
 
 func (r SqlRow) Close() error {
-    return r.Rows.Close()
+	return r.Rows.Close()
 }
 
 func env(varName string) string {
