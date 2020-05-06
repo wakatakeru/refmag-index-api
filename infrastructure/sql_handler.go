@@ -3,7 +3,6 @@ package infrastructure
 import (
 	"database/sql"
 	"log"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/wakatakeru/refmag-index-api/interfaces/database"
@@ -14,6 +13,7 @@ type SqlHandler struct {
 }
 
 func NewSqlHandler() *SqlHandler {
+	// TODO: GetEnv
 	conn, err := sql.Open("mysql", "mysql:@/refmag")
 
 	if err != nil {
@@ -71,8 +71,4 @@ func (r SqlRow) Next() bool {
 
 func (r SqlRow) Close() error {
 	return r.Rows.Close()
-}
-
-func env(varName string) string {
-	return os.Getenv(varName)
 }
