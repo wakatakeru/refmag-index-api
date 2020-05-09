@@ -20,6 +20,7 @@ func init() {
 
 	router.POST("/papers", func(c *gin.Context) { paperController.Create(c) })
 	router.GET("/papers", func(c *gin.Context) { paperController.Index(c) })
+	router.GET("/papers/:id", func(c *gin.Context) { paperController.Show(c) })
 
 	Router = router
 }

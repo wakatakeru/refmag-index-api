@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/wakatakeru/refmag-index-api/domain"
 	"github.com/wakatakeru/refmag-index-api/interfaces/database"
@@ -36,6 +37,16 @@ func (controller *PaperController) Create(c Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, paper)
+}
+
+func (controller *PaperController) Show(c Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	paper, err := controller.Interactor.Paper(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
 	c.JSON(http.StatusOK, paper)
 }
 

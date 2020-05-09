@@ -25,7 +25,30 @@ func (repo *PaperRepository) Store(u domain.Paper) (id int, err error) {
 	return
 }
 
-// TODO: Add Function of FindByID, FindByTitle
+func (repo *PaperRepository) FindByID(paper_id int) (paper domain.Paper, err error) {
+	row, err := repo.Query("SELECT id, title, doi, supplement FROM papers WHERE id = ?", paper_id)
+	defer row.Close()
+	if err != nil {
+		return
+	}
+
+	var id int
+	var title string
+	var doi string
+	var supplement string
+
+	row.Next()
+	err = row.Scan(&id, &title, &doi, &supplement)
+	if err != nil {
+		return
+	}
+
+	paper.ID = id
+	paper.Title = title
+	paper.DOI = doi
+	paper.Supplement = supplement
+	return
+}
 
 func (repo *PaperRepository) FindAll() (papers domain.Papers, err error) {
 	rows, err := repo.Query("SELECT id, title, doi, supplement FROM papers")
