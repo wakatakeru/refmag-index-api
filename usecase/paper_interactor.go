@@ -6,6 +6,11 @@ type PaperInteractor struct {
 	PaperRepository PaperRepository
 }
 
+func NewPaperInteractor(paperRepository PaperRepository) PaperInteractor {
+	paperInteractor := PaperInteractor{PaperRepository: paperRepository}
+	return paperInteractor
+}
+
 func (interactor *PaperInteractor) Add(p domain.Paper) (err error) {
 	_, err = interactor.PaperRepository.Store(p)
 	return
