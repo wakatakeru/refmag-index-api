@@ -11,7 +11,6 @@ import (
 
 func TestPaper(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
 
 	var expected domain.Paper
 	var err error
@@ -34,7 +33,6 @@ func TestPaper(t *testing.T) {
 
 func TestPapers(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
 
 	var expected domain.Papers
 	var err error
@@ -56,7 +54,6 @@ func TestPapers(t *testing.T) {
 
 func TestAdd(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
 
 	var expected domain.Paper
 	var err error
