@@ -11,7 +11,12 @@ func (interactor *PaperInteractor) Add(p domain.Paper) (err error) {
 	return
 }
 
-func (interactor *PaperInteractor) Papers() (paper domain.Papers, err error) {
-	paper, err = interactor.PaperRepository.FindAll()
+func (interactor *PaperInteractor) Paper(id int) (paper domain.Paper, err error) {
+	paper, err = interactor.PaperRepository.FindByID(id)
+	return
+}
+
+func (interactor *PaperInteractor) Papers() (papers domain.Papers, err error) {
+	papers, err = interactor.PaperRepository.FindAll()
 	return
 }
