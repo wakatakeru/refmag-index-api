@@ -25,7 +25,7 @@ func NewSqlHandler() *SqlHandler {
 	return sqlHandler
 }
 
-func (handler *SqlHandler) Execute(statement string, args ...interface{}) (database.Result, error) {
+func (handler *SqlHandler) Execute(statement string, args ...interface{}) (database.SqlResult, error) {
 	res := SqlResult{}
 	result, err := handler.Conn.Exec(statement, args...)
 	if err != nil {
