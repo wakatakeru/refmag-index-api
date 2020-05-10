@@ -1,6 +1,7 @@
 package database
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -22,9 +23,13 @@ func TestStore(t *testing.T) {
 	mockSqlResult.EXPECT().LastInsertId().Return(expectedID, err)
 
 	paperRepository := NewPaperRepository(mockSqlHandler)
-	_, err = paperRepository.Store(paper)
+	resultID, err := paperRepository.Store(paper)
 
 	if err != nil {
+		t.Error("Store is not same as expected")
+	}
+
+	if !reflect.DeepEqual(int(expectedID), resultID) {
 		t.Error("Store is not same as expected")
 	}
 }
@@ -57,5 +62,22 @@ func TestFindByID(t *testing.T) {
 }
 
 func TestFindAll(t *testing.T) {
-	return
+	ctrl := gomock.NewController(t)
+
+	mockSqlHandler := NewMockSqlHandler(ctrl)
+	mockRow := NewMockRow(ctrl)
+
+	query := "SELECT id, title, doi, supplement FROM papers"
+	var err error
+
+	mockSqlHandler.EXPECT().Query(query).Return(mockRow, err)
+	mockRow.EXPECT().Next()
+	mockRow.EXPECT().Close()
+
+	paperRepository := NewPaperRepository(mockSqlHandler)
+	_, err = paperRepository.FindAll()
+
+	if err != nil {
+		t.Error("FindAll is not same as expected")
+	}
 }
