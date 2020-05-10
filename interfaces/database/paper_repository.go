@@ -8,9 +8,14 @@ type PaperRepository struct {
 	SqlHandler
 }
 
-func (repo *PaperRepository) Store(u domain.Paper) (id int, err error) {
+func NewPaperRepository(sqlHandler SqlHandler) PaperRepository {
+	paperRepository := PaperRepository{SqlHandler: sqlHandler}
+	return paperRepository
+}
+
+func (repo *PaperRepository) Store(p domain.Paper) (id int, err error) {
 	result, err := repo.Execute(
-		"INSERT INTO papers (title, doi, supplement) VALUES (?,?,?)", u.Title, u.DOI, u.Supplement,
+		"INSERT INTO papers (title, doi, supplement) VALUES (?,?,?)", p.Title, p.DOI, p.Supplement,
 	)
 
 	if err != nil {
