@@ -6,7 +6,6 @@ package mock
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	database "github.com/wakatakeru/refmag-index-api/interfaces/database"
 	reflect "reflect"
 )
 
@@ -34,14 +33,14 @@ func (m *MockSqlHandler) EXPECT() *MockSqlHandlerMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockSqlHandler) Execute(arg0 string, arg1 ...interface{}) (database.SqlResult, error) {
+func (m *MockSqlHandler) Execute(arg0 string, arg1 ...interface{}) (SqlResult, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0}
 	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Execute", varargs...)
-	ret0, _ := ret[0].(database.SqlResult)
+	ret0, _ := ret[0].(SqlResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -54,14 +53,14 @@ func (mr *MockSqlHandlerMockRecorder) Execute(arg0 interface{}, arg1 ...interfac
 }
 
 // Query mocks base method.
-func (m *MockSqlHandler) Query(arg0 string, arg1 ...interface{}) (database.Row, error) {
+func (m *MockSqlHandler) Query(arg0 string, arg1 ...interface{}) (Row, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0}
 	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Query", varargs...)
-	ret0, _ := ret[0].(database.Row)
+	ret0, _ := ret[0].(Row)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
