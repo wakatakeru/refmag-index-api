@@ -1,11 +1,11 @@
 package database
 
 type SqlHandler interface {
-	Execute(string, ...interface{}) (Result, error)
+	Execute(string, ...interface{}) (SqlResult, error)
 	Query(string, ...interface{}) (Row, error)
 }
 
-type Result interface {
+type SqlResult interface {
 	LastInsertId() (int64, error)
 	RowsAffected() (int64, error)
 }
