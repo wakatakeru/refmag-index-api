@@ -6,7 +6,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 	domain "github.com/wakatakeru/refmag-index-api/domain"
-	mock "github.com/wakatakeru/refmag-index-api/mock"
 )
 
 func TestPaper(t *testing.T) {
@@ -16,7 +15,7 @@ func TestPaper(t *testing.T) {
 	var err error
 	id := 0
 
-	mockSample := mock.NewMockPaperRepository(ctrl)
+	mockSample := NewMockPaperRepository(ctrl)
 	mockSample.EXPECT().FindByID(id).Return(expected, err)
 
 	paperInteractor := NewPaperInteractor(mockSample)
@@ -37,7 +36,7 @@ func TestPapers(t *testing.T) {
 	var expected domain.Papers
 	var err error
 
-	mockSample := mock.NewMockPaperRepository(ctrl)
+	mockSample := NewMockPaperRepository(ctrl)
 	mockSample.EXPECT().FindAll().Return(expected, err)
 
 	paperInteractor := NewPaperInteractor(mockSample)
@@ -59,7 +58,7 @@ func TestAdd(t *testing.T) {
 	var err error
 	id := 0
 
-	mockSample := mock.NewMockPaperRepository(ctrl)
+	mockSample := NewMockPaperRepository(ctrl)
 	mockSample.EXPECT().Store(expected).Return(id, err)
 
 	paperInteractor := NewPaperInteractor(mockSample)
