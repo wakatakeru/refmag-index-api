@@ -30,8 +30,8 @@ func (repo *PaperRepository) Store(p domain.Paper) (id int, err error) {
 	return
 }
 
-func (repo *PaperRepository) FindByID(paper_id int) (paper domain.Paper, err error) {
-	row, err := repo.Query("SELECT id, title, doi, supplement FROM papers WHERE id = ?", paper_id)
+func (repo *PaperRepository) FindByID(paperID int) (paper domain.Paper, err error) {
+	row, err := repo.Query("SELECT id, title, doi, supplement FROM papers WHERE id = ?", paperID)
 	defer row.Close()
 	if err != nil {
 		return
