@@ -4,8 +4,8 @@ CREATE TABLE papers (
   title VARCHAR(512) NOT NULL,
   doi VARCHAR(128) NOT NULL, 
   supplement TEXT,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-)
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Grant Access
 GRANT ALL ON refmag.papers TO refmag;
