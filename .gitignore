@@ -39,3 +39,6 @@
 .history
 .vscode
 # End of https://www.gitignore.io/api/go,direnv,visualstudiocode
+
+### Docker Compose
+docker-compose.yml
