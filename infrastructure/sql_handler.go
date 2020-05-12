@@ -14,14 +14,16 @@ type SqlHandler struct {
 }
 
 func NewSqlHandler() *SqlHandler {
-	config := mysql.NewConfig{
-		User:   os.Getenv("DB_USER"),
-		Passwd: os.Getenv("DB_PASS"),
-		DBName: os.Getenv("DB_NAME"),
-		Addr:   os.Getenv("DB_ADDR"),
+	config := &mysql.Config{
+		User:                 os.Getenv("DB_USER"),
+		Passwd:               os.Getenv("DB_PASS"),
+		DBName:               os.Getenv("DB_NAME"),
+		Addr:                 os.Getenv("DB_ADDR"),
+		Net:                  "tcp",
+		AllowNativePasswords: true,
 	}
 
-	conn, err := sql.Open("mysql", config)
+	conn, err := sql.Open("mysql", config.FormatDSN())
 
 	if err != nil {
 		log.Panic(err)

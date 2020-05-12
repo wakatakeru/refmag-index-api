@@ -1,11 +1,10 @@
 -- Create DB
-CREATE TABLE papers (
-  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  title VARCHAR(512) NOT NULL,
-  doi VARCHAR(128) NOT NULL, 
-  supplement TEXT,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE refmag.papers (
+  id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  title TEXT,
+  doi VARCHAR(255), 
+  supplement TEXT
 );
 
 -- Grant Access
-GRANT ALL ON refmag.papers TO refmag;
+GRANT ALL ON *.* TO refmag;
