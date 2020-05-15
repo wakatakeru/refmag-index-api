@@ -23,7 +23,7 @@ func (repo *PaperRepository) Store(p domain.Paper) (id int, err error) {
 	}
 
 	id64, err := result.LastInsertId()
-	if err == nil {
+	if err != nil {
 		return
 	}
 	id = int(id64)
