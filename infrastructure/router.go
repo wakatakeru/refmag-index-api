@@ -16,7 +16,7 @@ func init() {
 	config.AllowOrigins = []string{"http://localhost:3000"}
 	router.Use(cors.New(config))
 
-	paperController := controllers.NewPaperController(NewSqlHandler())
+	paperController := controllers.NewPaperController(NewSqlHandler(), NewJWTHandler())
 
 	router.POST("/papers", func(c *gin.Context) { paperController.Create(c) })
 	router.GET("/papers", func(c *gin.Context) { paperController.Index(c) })
