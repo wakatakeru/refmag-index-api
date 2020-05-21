@@ -14,6 +14,10 @@ func init() {
 	// Config for CORS (AllowOrigins for development environment)
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowHeaders = []string{
+		"Content-Type",
+		"Authorization",
+	}
 	router.Use(cors.New(config))
 
 	paperController := controllers.NewPaperController(NewSqlHandler(), NewJWTHandler())
