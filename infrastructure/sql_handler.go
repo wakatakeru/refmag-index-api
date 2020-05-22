@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/wakatakeru/refmag-index-api/interfaces/database"
 )
 
 type SqlHandler struct {
@@ -34,7 +33,7 @@ func NewSqlHandler() *SqlHandler {
 	return sqlHandler
 }
 
-func (handler *SqlHandler) Execute(statement string, args ...interface{}) (database.SqlResult, error) {
+func (handler *SqlHandler) Execute(statement string, args ...interface{}) (SqlResult, error) {
 	res := SqlResult{}
 	result, err := handler.Conn.Exec(statement, args...)
 	if err != nil {
@@ -44,12 +43,12 @@ func (handler *SqlHandler) Execute(statement string, args ...interface{}) (datab
 	return res, nil
 }
 
-func (handler *SqlHandler) Query(statement string, args ...interface{}) (database.Row, error) {
+func (handler *SqlHandler) Query(statement string, args ...interface{}) (SqlRow, error) {
 	rows, err := handler.Conn.Query(statement, args...)
 	if err != nil {
-		return new(SqlRow), err
+		return SqlRow{}, err
 	}
-	row := new(SqlRow)
+	row := SqlRow{}
 	row.Rows = rows
 	return row, nil
 }
