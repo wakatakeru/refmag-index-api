@@ -12,6 +12,7 @@ RUN make build
 
 FROM alpine:3.11.6
 WORKDIR /app
+COPY rsa /app/rsa
 COPY --from=builder /src/bin/server /app/server
 EXPOSE 8080
 
